@@ -19,6 +19,8 @@
 <style>
   .buttons-wrapper {
     display: flex;
+
+    justify-content: center;
   }
 
   button {
@@ -27,10 +29,10 @@
     padding: 8px;
 
     color: pink;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.6);
   }
 
   #selected {
-    background-color: blueviolet;
+    background-color: rgba(137, 43, 226, 0.6);
   }
 </style>

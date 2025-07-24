@@ -3,30 +3,24 @@
 
   import LogInForm from "./LogInForm.svelte";
   import SignUpForm from "./SignUpForm.svelte";
-  import type { SvelteComponent } from "svelte";
 
   function onOptionSelected(option_index: number) {
-    if(option_index === 0)
-    {
-      form = SignUpForm;
-    }
-    else 
-    {
-      form = LogInForm;
+    if (option_index === 0) {
+      Form = SignUpForm;
+    } else {
+      Form = LogInForm;
     }
   }
 
-
-  let form : typeof SignUpForm;
-
-  form = LogInForm;
+  let Form: typeof SignUpForm = $state(SignUpForm);
 </script>
 
+<div class="spacer"></div>
 <SwitchableButtons
   options={["sign up", "log in"]}
   on_option_selected={onOptionSelected}
 />
-<svelte:component this={form} />
+<Form />
 
 <style>
   :global(body) {
@@ -41,7 +35,13 @@
 
     display: flex;
 
-    justify-content: center;
+    justify-content:start;
     align-items: center;
+
+    flex-direction: column;
+  }
+
+  .spacer {
+    height: 25vh;
   }
 </style>
