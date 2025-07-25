@@ -1,0 +1,2 @@
+DELETE http://localhost:8000/api/users/logout
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZGl4OXFzdTAwMDBqaGdvenp3ODhoNWIiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJ1c2VybmFtZSI6ImRhcmtvIiwiaWF0IjoxNzUzNDU0MDczfQ.b9vuQY35dtW6La_eVFyCvlvUs5-hzBiQM_hly6tT4J8

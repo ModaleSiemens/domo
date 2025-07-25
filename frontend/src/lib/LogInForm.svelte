@@ -6,7 +6,6 @@
   action="./submit"
   method="get"
   class="log-in-form"
-  in:fly={{ y: -400, duration: 500 }}
 >
   <div id="form-fields">
     <p in:fly={{ x: -400, duration: 500 }}>
