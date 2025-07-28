@@ -5,6 +5,13 @@ import { userSchemas } from "./modules/users/user.schema";
 import fjwt, { FastifyJWT } from '@fastify/jwt'
 import fCookie from '@fastify/cookie'
 import cors from "@fastify/cors";
+import { handler } from '../../frontend/build/handler.js'
+import middie from '@fastify/middie'
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import dotenv from 'dotenv'
+
+dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.env') });
 
 const app = Fastify({
   logger: true
@@ -30,11 +37,11 @@ app.register(cors, {
 app.register(userRoutes, { prefix: 'api/users' });
 
 app.register(fjwt, {
-  secret: 'TODO'
+  secret: process.env.JWT_SECRET as string
 });
 
 app.register(fCookie, {
-  secret: 'TODO',
+  secret: process.env.JWT_SECRET as string,
   hook: "preHandler"
 });
 
@@ -51,12 +58,24 @@ app.decorate(
   }
 )
 
-app.addHook('preHandler', (req, res, next) => {
-  req.jwt = app.jwt;
-  return next();
-})
-
 async function main() {
+  await app.register(middie);
+
+  app.addHook('preHandler', (request, reply, done) => {
+    if (request.url?.startsWith('/api')) {
+      request.jwt = app.jwt;
+    }
+    done();
+  });
+
+  app.use((req, res, next) => {
+    if (req.url?.startsWith('/api')) {
+      return next();
+    } else {
+      return handler(req, res, next);
+    }
+  });
+
   await app.listen({
     port: 8000,
     host: '0.0.0.0'
@@ -64,7 +83,3 @@ async function main() {
 }
 
 main();
-
-app.get('/healthcheck', (req, res) => {
-  res.send({ message: 'Success' })
-})

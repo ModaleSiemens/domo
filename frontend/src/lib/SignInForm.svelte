@@ -4,52 +4,31 @@
 	import { goto } from '$app/navigation';
 	import { api } from './api';
 	import { setUser } from './stores/auth';
-	import type { AuthResponse, RegisterRequest } from '../../../types';
+	import type { AuthResponse, LoginRequest } from '../../../types';
 
 	let email: string = '';
 	let password: string = '';
-	let confirmPassword: string = '';
-	let name: string = '';
 	let loading: boolean = false;
 	let error: string | null = null;
 
-	async function handleSignUp(): Promise<void> {
-		if (password !== confirmPassword) {
-			error = 'passwords do not match';
-			return;
-		}
-
+	async function handleSignIn(): Promise<void> {
 		try {
 			loading = true;
 			error = null;
 
-			const registerData: RegisterRequest = { email, password, name };
-			const response = await api.post<AuthResponse>('/api/users/register', registerData);
+			const loginData: LoginRequest = { email, password };
+			const response = await api.post<AuthResponse>('/api/users/login', loginData);
 
 			setUser(response.user);
 			goto('/home');
 		} catch (e: any) {
-			error = e.err || 'sign up failed';
-		} finally {
-			loading = false;
+			error = e.err || 'sign in failed';
 		}
 	}
 </script>
 
-<form on:submit|preventDefault={handleSignUp} class="sign-up-form">
+<form on:submit|preventDefault={handleSignIn} class="log-in-form">
 	<div id="form-fields">
-		<p in:fly={{ x: 400, duration: 500 }}>
-			<label for="username">username : </label>
-			<input
-				type="text"
-				name="username"
-				id="username"
-				required
-				autocomplete="on"
-				disabled={loading}
-				bind:value={name}
-			/>
-		</p>
 		<p in:fly={{ x: -400, duration: 500 }}>
 			<label for="email">email : </label>
 			<input
@@ -74,24 +53,12 @@
 				bind:value={password}
 			/>
 		</p>
-		<p in:fly={{ x: 400, duration: 500 }}>
-			<label for="confirm-password">confirm password : </label>
-			<input
-				type="password"
-				name="confirm-password"
-				id="confirm-password"
-				required
-				autocomplete="on"
-				disabled={loading}
-				bind:value={confirmPassword}
-			/>
-		</p>
 	</div>
 	{#if error}
 		<div class="error">{error}</div>
 	{/if}
 	<p>
-		<button id="form-button" in:fly={{ y: -400, duration: 500 }}>sign up</button>
+		<button id="form-button" in:fly={{ y: -400, duration: 500 }} disabled={loading}>log in</button>
 	</p>
 </form>
 
@@ -101,7 +68,7 @@
 		flex-direction: column;
 		align-items: center;
 
-		background-color: rgba(137, 43, 226, 0.6);
+		background-color: rgba(137, 43, 226, 0.589);
 
 		border-radius: 16px;
 

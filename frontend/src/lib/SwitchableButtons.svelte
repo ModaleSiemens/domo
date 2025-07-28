@@ -1,7 +1,5 @@
 <script lang="ts">
-  let { options, default_option = 0, on_option_selected} = $props();
-
-  let selected_option = $state(default_option);
+  let { options, selected_option = 0, on_option_selected} = $props();
 
   function switchOption(option_index : number) {
     on_option_selected(option_index);
