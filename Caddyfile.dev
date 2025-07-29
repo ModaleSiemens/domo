@@ -1,0 +1,13 @@
+localhost:3000 {
+  handle /api/* {
+    reverse_proxy 127.0.0.1:8000
+  }
+
+  handle {
+    reverse_proxy 127.0.0.1:5173
+  }
+
+  log {
+    output stdout
+  }
+}

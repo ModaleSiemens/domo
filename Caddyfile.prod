@@ -1,0 +1,18 @@
+localhost:3000 {
+  handle /api/* {
+    reverse_proxy 127.0.0.1:8000
+  }
+
+  handle {
+    reverse_proxy 127.0.0.1:4173
+  }
+
+  encode gzip
+
+  log {
+    output file logs/caddy.log {
+      roll_size 10mb
+      roll:keep 10
+    }
+  }
+}

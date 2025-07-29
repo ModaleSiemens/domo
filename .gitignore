@@ -7,6 +7,7 @@ frontend/.routify
 
 # Vite build output
 frontend/dist/
+backend/dist
 
 # Logs
 *.log

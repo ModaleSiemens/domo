@@ -1,5 +1,5 @@
 import { JWT } from '@fastify/jwt'
-import { User } from '../src/generated/prisma'
+import { User } from '@prisma/client'
 
 declare module 'fastify' {
   interface FastifyRequest {

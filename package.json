@@ -1,1 +1,22 @@
-{}
+{
+  "name": "domo",
+  "version": "1.0.0",
+  "description": "household management site",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"pnpm run dev:backend\" \"pnpm run dev:frontend\" \"pnpm run dev:caddy\"",
+    "dev:backend": "cd backend && pnpm run dev",
+    "dev:frontend": "cd frontend && pnpm run dev",
+    "dev:caddy": "caddy run --config Caddyfile.dev --watch",
+    "build": "pnpm run build:backend && pnpm run build:frontend",
+    "build:backend": "cd backend && pnpm run build",
+    "build:frontend": "cd frontend && pnpm run build",
+    "start": "concurrently \"pnpm run start:backend\" \"pnpm run start:frontend\" \"pnpm run start:caddy\"",
+    "start:backend": "cd backend && pnpm start",
+    "start:frontend": "cd frontend && pnpm run preview",
+    "start:caddy": "caddy run --config Caddyfile.prod"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

@@ -1,7 +1,6 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import { FastifyInstance } from "fastify";
 import { createUserResponseSchema, createUserSchema, loginResponseSchema, loginSchema } from "./user.schema";
 import { createUser, login } from "./user.controller";
-import { getUsers } from "./user.controller";
 import { logout } from "./user.controller";
 
 export async function userRoutes(app: FastifyInstance) {

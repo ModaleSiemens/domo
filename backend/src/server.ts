@@ -5,13 +5,9 @@ import { userSchemas } from "./modules/users/user.schema";
 import fjwt, { FastifyJWT } from '@fastify/jwt'
 import fCookie from '@fastify/cookie'
 import cors from "@fastify/cors";
-import { handler } from '../../frontend/build/handler.js'
-import middie from '@fastify/middie'
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import dotenv from 'dotenv'
 
-dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.env') });
+dotenv.config();
 
 const app = Fastify({
   logger: true
@@ -33,8 +29,6 @@ app.register(cors, {
   origin: 'http://localhost:5173',
   credentials: true
 })
-
-app.register(userRoutes, { prefix: 'api/users' });
 
 app.register(fjwt, {
   secret: process.env.JWT_SECRET as string
@@ -58,22 +52,12 @@ app.decorate(
   }
 )
 
+app.register(userRoutes, { prefix: 'api/users' });
+
 async function main() {
-  await app.register(middie);
-
   app.addHook('preHandler', (request, reply, done) => {
-    if (request.url?.startsWith('/api')) {
-      request.jwt = app.jwt;
-    }
+    request.jwt = app.jwt;
     done();
-  });
-
-  app.use((req, res, next) => {
-    if (req.url?.startsWith('/api')) {
-      return next();
-    } else {
-      return handler(req, res, next);
-    }
   });
 
   await app.listen({
