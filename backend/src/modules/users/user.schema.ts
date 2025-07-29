@@ -3,7 +3,7 @@ import { Static, Type } from "@fastify/type-provider-typebox"
 export const createUserSchema = Type.Object({
   email: Type.String({ format: 'email' }),
   password: Type.String({ minLength: 6 }),
-  username: Type.String()
+  name: Type.String()
 }, { $id: 'CreateUserSchema' });
 
 export type CreateUserInput = Static<typeof createUserSchema>;
@@ -11,7 +11,7 @@ export type CreateUserInput = Static<typeof createUserSchema>;
 export const createUserResponseSchema = Type.Object({
   id: Type.String(),
   email: Type.String({ format: 'email' }),
-  username: Type.String()
+  name: Type.String()
 }, { $id: 'CreateUserResponseSchema' });
 
 export const loginSchema = Type.Object({

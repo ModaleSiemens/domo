@@ -2,7 +2,7 @@ import { browser } from "$app/environment";
 import type { ApiError } from "../../../types"
 import { PUBLIC_API_BASE } from '$env/static/public'
 
-const API_BASE = browser ? (PUBLIC_API_BASE || '') : '';
+const API_BASE = browser ? (PUBLIC_API_BASE || '/api') : 'http://localhost:8000/api';
 
 class ApiClient {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
@@ -61,7 +61,7 @@ class ApiClient {
   async post<T>(endpoint: string, data?: any, options: RequestInit = {}): Promise<T> {
     return this.request<T>(
       endpoint,
-      { ...options, method: 'GET', body: data }
+      { ...options, method: 'POST', body: data }
     );
   }
 

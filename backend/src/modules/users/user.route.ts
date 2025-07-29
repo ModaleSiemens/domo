@@ -5,14 +5,6 @@ import { getUsers } from "./user.controller";
 import { logout } from "./user.controller";
 
 export async function userRoutes(app: FastifyInstance) {
-  app.get(
-    '/',
-    {
-      preHandler: [app.authenticate],
-    },
-    getUsers
-  )
-
   app.post(
     '/register',
     {

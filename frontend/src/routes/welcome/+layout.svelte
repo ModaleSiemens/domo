@@ -16,32 +16,29 @@
 	let { children } = $props();
 </script>
 
-<main>
-	<div class="spacer"></div>
-	<SwitchableButtons options={['sign up', 'sign in']} on_option_selected={handleSwitchChange} selected_option={isLogin? 1 : 0}/>
-	{@render children?.()}
-</main>
+<div class="welcome-wrapper">
+	<main>
+		<SwitchableButtons
+			options={['sign up', 'sign in']}
+			on_option_selected={handleSwitchChange}
+			selected_option={isLogin ? 1 : 0}
+		/>
+		{@render children?.()}
+	</main>
+</div>
 
 <style>
-	:global(body) {
-		margin: 0;
-
-		background-image: url('/flowery-meadow-and-sky-background.webp');
-
-		background-repeat: no-repeat;
+	.welcome-wrapper {
+		position: fixed;
+		inset: 0;
 		background-size: cover;
-
-		height: 100vh;
-
+		background-position: center;
+		min-height: 100vh;
 		display: flex;
-
-		justify-content: start;
+		flex-direction: column;
+		justify-content: center;
 		align-items: center;
 
-		flex-direction: column;
-	}
-
-	.spacer {
-		height: 25vh;
+		background-image: url('/flowery-meadow-and-sky-background.webp');
 	}
 </style>

@@ -11,7 +11,7 @@ export async function createUser(
   }>,
   reply: FastifyReply
 ) {
-  const { password, email, username } = req.body;
+  const { password, email, name } = req.body;
 
   const user = await prisma.user.findUnique({
     where: {
@@ -21,7 +21,7 @@ export async function createUser(
 
   if (user) {
     return reply.code(401).send({
-      message: 'esiste già un utente con questa email'
+      message: 'errore durante la registrazione'
     });
   }
 
@@ -31,7 +31,7 @@ export async function createUser(
       data: {
         password: hash,
         email,
-        username
+        name
       }
     });
 
@@ -57,14 +57,14 @@ export async function login(
 
   if (!user || !is_match) {
     return reply.code(401).send({
-      message: 'invalid email or password'
+      message: 'email o password non valida'
     });
   }
 
   const payload = {
     id: user.id,
     email: user.email,
-    username: user.username
+    name: user.name
   };
 
   const token = req.jwt.sign(payload);
@@ -82,7 +82,7 @@ export async function getUsers(req: FastifyRequest, reply: FastifyReply) {
   const users = await prisma.user.findMany(
     {
       select: {
-        username: true,
+        name: true,
         id: true,
         email: true
       }
