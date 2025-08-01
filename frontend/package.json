@@ -45,6 +45,8 @@
   },
   "dependencies": {
     "dotenv": "^17.2.1",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "svelte-file-dropzone": "^2.0.9",
+    "virtua": "^0.41.5"
   }
 }
