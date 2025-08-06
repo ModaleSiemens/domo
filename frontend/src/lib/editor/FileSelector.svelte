@@ -7,17 +7,17 @@
 	}
 
 	let files: {
-		accepted: DroppedFile[];
-		rejected: DroppedFile[];
+		accepted: File[];
+		rejected: File[];
 	} = $state({
 		accepted: [],
 		rejected: []
 	});
 
-	let data: (string | undefined)[] = $derived(Array.from(files.accepted, (file) => file.path));
+	let data: (string | undefined)[] = $derived(Array.from(files.accepted, (file) => file.name));
 
 	function removeFileFromList(name: string | undefined) {
-		files.accepted = files.accepted.filter((file) => file.path !== name);
+		files.accepted = files.accepted.filter((file) => file.name !== name);
 	}
 
 	function handleFilesSelected(e: any) {
@@ -27,6 +27,19 @@
 
 		files.accepted = [...files.accepted, ...acceptedFiles];
 		files.rejected = [...files.rejected, ...fileRejections];
+	}
+
+	async function  uploadFiles(e: any) {
+		const formData = new FormData();
+
+		files.accepted.forEach((file) => {
+      formData.append('files', file);
+    });
+
+    const res = await fetch('http://localhost:8000/api/content', {
+      method: 'POST',
+      body: formData
+    });
 	}
 </script>
 
@@ -45,12 +58,23 @@
 					<div class="item">
 						{item}
 					</div>
-					<input type="button" value="rimuovi" class="remove-button" onclick={() => removeFileFromList(data[index])}/>
+					<input
+						type="button"
+						value="rimuovi"
+						class="remove-button"
+						onclick={() => removeFileFromList(data[index])}
+					/>
 				</div>
 			{/snippet}
 		</VList>
 	</div>
-  <input type="button" value="carica allegati" id="send-button"  style="display: {files.accepted.length ? 'block' : 'none'}">
+	<input
+		type="button"
+		value="carica allegati"
+		id="send-button"
+		style="display: {files.accepted.length ? 'block' : 'none'}"
+		onclick={uploadFiles}
+	/>
 </div>
 
 <style>
@@ -69,17 +93,17 @@
 		font-size: 2rem;
 	}
 
-  #send-button {
-    width: 16vw;
+	#send-button {
+		width: 16vw;
 
-    border: none;
+		border: none;
 
-    background-color: white;
+		background-color: white;
 
-    color: blueviolet;
+		color: blueviolet;
 
-    font-size: 2rem;
-  }
+		font-size: 2rem;
+	}
 
 	#file-selector {
 		display: flex;
@@ -124,9 +148,9 @@
 		font-size: 1.5rem;
 	}
 
-  .item {
-    font-size: 1.5rem;
+	.item {
+		font-size: 1.5rem;
 
-    padding-left: 16px;
-  }
+		padding-left: 16px;
+	}
 </style>

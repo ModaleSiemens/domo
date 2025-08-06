@@ -6,6 +6,8 @@ import fjwt, { FastifyJWT } from '@fastify/jwt'
 import fCookie from '@fastify/cookie'
 import cors from "@fastify/cors";
 import dotenv from 'dotenv'
+import { contentRoutes, MAX_FILE_SIZE } from "./modules/users/content.route";
+import fastifyMultipart from "@fastify/multipart";
 
 dotenv.config();
 
@@ -26,9 +28,9 @@ for (let schema of [...userSchemas]) {
 }
 
 app.register(cors, {
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
   credentials: true
-})
+});
 
 app.register(fjwt, {
   secret: process.env.JWT_SECRET as string
@@ -37,6 +39,13 @@ app.register(fjwt, {
 app.register(fCookie, {
   secret: process.env.JWT_SECRET as string,
   hook: "preHandler"
+});
+
+app.register(fastifyMultipart, {
+  limits: {
+    files: 10,
+    fileSize: MAX_FILE_SIZE
+  }
 });
 
 app.decorate(
@@ -53,6 +62,7 @@ app.decorate(
 )
 
 app.register(userRoutes, { prefix: 'api/users' });
+app.register(contentRoutes, { prefix: 'api' });
 
 async function main() {
   app.addHook('preHandler', (request, reply, done) => {
